@@ -28,7 +28,7 @@ func TestNewLoggerFormats(t *testing.T) {
 			t.Parallel()
 			want := assert.New(t)
 			var buf bytes.Buffer
-			cfg := xlog.LoggerConfig{LogLevel: "info", LogFormat: tt.format}
+			cfg := xlog.LoggerConfig{Level: "info", Format: tt.format}
 			cfg.NewLogger(&buf).Info("hello", "k", "v")
 			line := buf.String()
 			want.Contains(line, "hello")
@@ -58,7 +58,7 @@ func TestNewLoggerLevels(t *testing.T) {
 			t.Parallel()
 			want := assert.New(t)
 			var buf bytes.Buffer
-			cfg := xlog.LoggerConfig{LogLevel: tt.level, LogFormat: xlog.FormatText}
+			cfg := xlog.LoggerConfig{Level: tt.level, Format: xlog.FormatText}
 			log := cfg.NewLogger(&buf)
 			log.Debug("dbg")
 			log.Info("inf")
@@ -72,6 +72,6 @@ func TestNewLoggerLevels(t *testing.T) {
 
 func TestNewLoggerReturnsLogger(t *testing.T) {
 	t.Parallel()
-	cfg := xlog.LoggerConfig{LogLevel: "info", LogFormat: xlog.FormatText}
+	cfg := xlog.LoggerConfig{Level: "info", Format: xlog.FormatText}
 	assert.New(t).IsType(&slog.Logger{}, cfg.NewLogger(&bytes.Buffer{}))
 }

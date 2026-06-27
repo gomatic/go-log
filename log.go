@@ -10,9 +10,9 @@ import (
 )
 
 type (
-	// LogLevel is the textual logging level (debug, info, warn, error).
+	// Level is the textual logging level (debug, info, warn, error).
 	Level string
-	// LogFormat selects the log encoding (text or json).
+	// Format selects the log encoding (text or json).
 	Format string
 )
 
@@ -49,11 +49,11 @@ func (f Format) handler(w io.Writer, opts *slog.HandlerOptions) slog.Handler {
 
 // LoggerConfig holds the logging configuration bound from a consumer's flags.
 type LoggerConfig struct {
-	LogLevel  Level
-	LogFormat Format
+	Level  Level
+	Format Format
 }
 
 // NewLogger builds a logger writing to w using the level and format in cfg.
 func (cfg LoggerConfig) NewLogger(w io.Writer) *slog.Logger {
-	return slog.New(cfg.LogFormat.handler(w, &slog.HandlerOptions{Level: cfg.LogLevel.level()}))
+	return slog.New(cfg.Format.handler(w, &slog.HandlerOptions{Level: cfg.Level.level()}))
 }
