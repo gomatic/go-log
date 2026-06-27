@@ -1,4 +1,4 @@
-package slogx_test
+package log_test
 
 import (
 	"bytes"
@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	slogx "github.com/skykernel/go-log"
+	xlog "github.com/gomatic/go-log"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -15,11 +15,11 @@ func TestNewLoggerFormats(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
 		name   string
-		format slogx.LogFormat
+		format xlog.LogFormat
 		isJSON bool
 	}{
-		{"text", slogx.FormatText, false},
-		{"json", slogx.FormatJSON, true},
+		{"text", xlog.FormatText, false},
+		{"json", xlog.FormatJSON, true},
 		{"unknown defaults to text", "xml", false},
 	}
 	for _, tt := range tests {
@@ -27,7 +27,7 @@ func TestNewLoggerFormats(t *testing.T) {
 			t.Parallel()
 			want := assert.New(t)
 			var buf bytes.Buffer
-			cfg := slogx.LoggerConfig{LogLevel: "info", LogFormat: tt.format}
+			cfg := xlog.LoggerConfig{LogLevel: "info", LogFormat: tt.format}
 			cfg.NewLogger(&buf).Info("hello", "k", "v")
 			line := buf.String()
 			want.Contains(line, "hello")
@@ -44,7 +44,7 @@ func TestNewLoggerLevels(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
 		name      string
-		level     slogx.LogLevel
+		level     xlog.LogLevel
 		wantDebug bool
 	}{
 		{"debug enables debug", "debug", true},
@@ -57,7 +57,7 @@ func TestNewLoggerLevels(t *testing.T) {
 			t.Parallel()
 			want := assert.New(t)
 			var buf bytes.Buffer
-			cfg := slogx.LoggerConfig{LogLevel: tt.level, LogFormat: slogx.FormatText}
+			cfg := xlog.LoggerConfig{LogLevel: tt.level, LogFormat: xlog.FormatText}
 			log := cfg.NewLogger(&buf)
 			log.Debug("dbg")
 			log.Info("inf")
@@ -71,6 +71,6 @@ func TestNewLoggerLevels(t *testing.T) {
 
 func TestNewLoggerReturnsLogger(t *testing.T) {
 	t.Parallel()
-	cfg := slogx.LoggerConfig{LogLevel: "info", LogFormat: slogx.FormatText}
+	cfg := xlog.LoggerConfig{LogLevel: "info", LogFormat: xlog.FormatText}
 	assert.New(t).IsType(&slog.Logger{}, cfg.NewLogger(&bytes.Buffer{}))
 }

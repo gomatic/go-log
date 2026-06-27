@@ -2,7 +2,7 @@
 // textual level and format types bound from configuration, and a constructor
 // that builds a *slog.Logger over any writer. It knows nothing about command-line
 // frameworks; the binding of these types to flags lives in a consumer.
-package slogx
+package log
 
 import (
 	"io"

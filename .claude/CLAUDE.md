@@ -1,6 +1,6 @@
 # go-log
 
-CLI-agnostic structured-logging setup over `log/slog` (package `slogx`): `LogLevel`, `LogFormat`, `LoggerConfig`, and `NewLogger(w)`. It builds a `*slog.Logger` over any writer and knows nothing about command-line frameworks — binding these types to flags lives in a consumer (`go-app`).
+CLI-agnostic structured-logging setup over `log/slog` (package `log`, matching the `go-log` repo): `LogLevel`, `LogFormat`, `LoggerConfig`, and `NewLogger(w)`. Knows nothing about command-line frameworks. Generic — lives in `gomatic`, consumed by `template.cli` and the SkyKernel tools.
 
-- Depends only on the stdlib (testify for tests). Must not import urfave/cli or any CLI glue.
-- Quality gate: gofumpt, `go vet`, staticcheck, govulncheck, gocognit ≤ 7, **100% coverage**.
+- Depends only on the stdlib (testify for tests). Must not import a CLI framework.
+- Gate: gofumpt, vet, staticcheck, govulncheck, gocognit ≤ 7, 100% coverage.

@@ -1,4 +1,4 @@
-module github.com/skykernel/go-log
+module github.com/gomatic/go-log
 
 go 1.26.4
 
