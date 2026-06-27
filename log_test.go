@@ -7,15 +7,16 @@ import (
 	"strings"
 	"testing"
 
-	xlog "github.com/gomatic/go-log"
 	"github.com/stretchr/testify/assert"
+
+	xlog "github.com/gomatic/go-log"
 )
 
 func TestNewLoggerFormats(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
 		name   string
-		format xlog.LogFormat
+		format xlog.Format
 		isJSON bool
 	}{
 		{"text", xlog.FormatText, false},
@@ -44,7 +45,7 @@ func TestNewLoggerLevels(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
 		name      string
-		level     xlog.LogLevel
+		level     xlog.Level
 		wantDebug bool
 	}{
 		{"debug enables debug", "debug", true},

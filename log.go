@@ -1,4 +1,4 @@
-// Package slogx provides CLI-agnostic structured-logging setup over log/slog:
+// Package log provides CLI-agnostic structured-logging setup over log/slog:
 // textual level and format types bound from configuration, and a constructor
 // that builds a *slog.Logger over any writer. It knows nothing about command-line
 // frameworks; the binding of these types to flags lives in a consumer.
@@ -11,27 +11,27 @@ import (
 
 type (
 	// LogLevel is the textual logging level (debug, info, warn, error).
-	LogLevel string
+	Level string
 	// LogFormat selects the log encoding (text or json).
-	LogFormat string
+	Format string
 )
 
 // FormatText and FormatJSON are the supported log encodings.
 const (
-	FormatText LogFormat = "text"
-	FormatJSON LogFormat = "json"
+	FormatText Format = "text"
+	FormatJSON Format = "json"
 )
 
 // handlerFunc constructs a slog handler over a writer.
 type handlerFunc func(io.Writer, *slog.HandlerOptions) slog.Handler
 
-var handlers = map[LogFormat]handlerFunc{
+var handlers = map[Format]handlerFunc{
 	FormatText: func(w io.Writer, o *slog.HandlerOptions) slog.Handler { return slog.NewTextHandler(w, o) },
 	FormatJSON: func(w io.Writer, o *slog.HandlerOptions) slog.Handler { return slog.NewJSONHandler(w, o) },
 }
 
 // level parses the textual level, defaulting to info when empty or invalid.
-func (l LogLevel) level() slog.Level {
+func (l Level) level() slog.Level {
 	var lvl slog.Level
 	if err := lvl.UnmarshalText([]byte(l)); err != nil {
 		return slog.LevelInfo
@@ -40,7 +40,7 @@ func (l LogLevel) level() slog.Level {
 }
 
 // handler returns the slog handler for the format, defaulting to text when unknown.
-func (f LogFormat) handler(w io.Writer, opts *slog.HandlerOptions) slog.Handler {
+func (f Format) handler(w io.Writer, opts *slog.HandlerOptions) slog.Handler {
 	if h, ok := handlers[f]; ok {
 		return h(w, opts)
 	}
@@ -49,8 +49,8 @@ func (f LogFormat) handler(w io.Writer, opts *slog.HandlerOptions) slog.Handler 
 
 // LoggerConfig holds the logging configuration bound from a consumer's flags.
 type LoggerConfig struct {
-	LogLevel  LogLevel
-	LogFormat LogFormat
+	LogLevel  Level
+	LogFormat Format
 }
 
 // NewLogger builds a logger writing to w using the level and format in cfg.
